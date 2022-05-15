@@ -144,6 +144,7 @@ class MyAgent(OneShotAgent):
         """Called when a negotiation the agent is a party of ends with
         agreement"""
 
+from regression_agent import RegressionAgent
 
 def run(
         competition="oneshot",
@@ -180,6 +181,7 @@ def run(
             SyncRandomOneShotAgent,
             LearningAgent,
             Gentle,
+            # RegressionAgent
         ]
     else:
         from scml.scml2020.agents import BuyCheapSellExpensiveAgent, DecentralizingAgent

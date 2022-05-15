@@ -82,7 +82,7 @@ from negmas import (
 )
 
 from other_agents.agent_team73 import Gentle
-from other_agents.agent_team86 import Agent112
+from other_agents.agent_team86 import AgentOneOneTwo
 from other_agents.agent_template import LearningAgent
 
 
@@ -175,11 +175,11 @@ def run(
     if competition == "oneshot":
         competitors = [
             MyAgent,
-            # RandomOneShotAgent,
-            # SyncRandomOneShotAgent,
-            # LearningAgent,
-            # Gentle,
-            # Agent112,
+            RandomOneShotAgent,
+            AgentOneOneTwo,
+            SyncRandomOneShotAgent,
+            LearningAgent,
+            Gentle,
         ]
     else:
         from scml.scml2020.agents import BuyCheapSellExpensiveAgent, DecentralizingAgent

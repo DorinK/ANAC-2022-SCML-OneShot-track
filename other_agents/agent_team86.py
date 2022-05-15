@@ -12,7 +12,7 @@ from negmas import Outcome, ResponseType
 __all__ = [
     "SimpleAgent",
     "BetterAgent",
-    "Agent112",
+    "AgentOneOneTwo",
 ]
 
 
@@ -124,7 +124,7 @@ class BetterAgent(SimpleAgent):
         return ((n_steps - step - 1) / (n_steps - 1)) ** self._e
 
 
-class Agent112(BetterAgent):
+class AgentOneOneTwo(BetterAgent):
     def before_step(self):
         super().before_step()
         # Save the last buying/selling prices

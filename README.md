@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # oneshot
 =======
 SCML 2021 Agent Skeleton (OneShot)
@@ -71,5 +70,4 @@ Fill this section with your agent information
   - Team Members:
     1. First Name <first.email@institute.xyz>
     2. Second Name <first.email@institute.xyz>
-    3. ...    
->>>>>>> c255ecc (format file)
+    3. ...

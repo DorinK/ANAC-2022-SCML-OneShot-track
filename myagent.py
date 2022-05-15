@@ -81,6 +81,10 @@ from negmas import (
     ResponseType,
 )
 
+from other_agents.agent_team73 import Gentle
+from other_agents.agent_team86 import Agent112
+from other_agents.agent_template import LearningAgent
+
 
 class MyAgent(OneShotAgent):
     """
@@ -101,7 +105,7 @@ class MyAgent(OneShotAgent):
         pass
 
     def respond(
-        self, negotiator_id: str, state: SAOState, offer: Outcome
+            self, negotiator_id: str, state: SAOState, offer: Outcome
     ) -> ResponseType:
         """Called when the agent is asked to respond to an offer"""
         return ResponseType.END_NEGOTIATION
@@ -125,27 +129,27 @@ class MyAgent(OneShotAgent):
     # ================================
 
     def on_negotiation_failure(
-        self,
-        partners: List[str],
-        annotation: Dict[str, Any],
-        mechanism: AgentMechanismInterface,
-        state: MechanismState,
+            self,
+            partners: List[str],
+            annotation: Dict[str, Any],
+            mechanism: AgentMechanismInterface,
+            state: MechanismState,
     ) -> None:
         """Called when a negotiation the agent is a party of ends without
         agreement"""
 
     def on_negotiation_success(
-        self, contract: Contract, mechanism: AgentMechanismInterface
+            self, contract: Contract, mechanism: AgentMechanismInterface
     ) -> None:
         """Called when a negotiation the agent is a party of ends with
         agreement"""
 
 
 def run(
-    competition="oneshot",
-    reveal_names=True,
-    n_steps=10,
-    n_configs=2,
+        competition="oneshot",
+        reveal_names=True,
+        n_steps=10,
+        n_configs=2,
 ):
     """
     **Not needed for submission.** You can use this function to test your agent.
@@ -169,7 +173,14 @@ def run(
 
     """
     if competition == "oneshot":
-        competitors = [MyAgent, RandomOneShotAgent, SyncRandomOneShotAgent]
+        competitors = [
+            MyAgent,
+            # RandomOneShotAgent,
+            # SyncRandomOneShotAgent,
+            # LearningAgent,
+            # Gentle,
+            # Agent112,
+        ]
     else:
         from scml.scml2020.agents import BuyCheapSellExpensiveAgent, DecentralizingAgent
 
@@ -177,6 +188,7 @@ def run(
             MyAgent,
             DecentralizingAgent,
             BuyCheapSellExpensiveAgent,
+
         ]
 
     start = time.perf_counter()

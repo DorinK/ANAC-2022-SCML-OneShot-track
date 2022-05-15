@@ -4,7 +4,7 @@ from sklearn.linear_model import LinearRegression
 import numpy as np
 from scml.oneshot import OneShotAgent
 
-from other_agents.agent_team86 import AgentOneOneTwo
+from oneshot.other_agents.agent_team86 import AgentOneOneTwo
 
 QUANTITY = 0
 TIME = 1

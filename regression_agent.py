@@ -3,12 +3,10 @@ from collections import defaultdict
 
 from sklearn.linear_model import LinearRegression
 import numpy as np
-from scml.oneshot import OneShotAgent
 import pandas as pd
 
-from other_agents.agent_team86 import AgentOneOneTwo
-from other_agents.agent_template import LearningAgent
-import statistics
+from .other_agents.agent_team86 import AgentOneOneTwo
+from .other_agents.agent_template import LearningAgent
 
 
 QUANTITY = 0

@@ -81,10 +81,10 @@ from negmas import (
     ResponseType,
 )
 
-from other_agents.agent_team73 import Gentle, AdaptiveAgent
-from other_agents.agent_team86 import AgentOneOneTwo
-from other_agents.agent_template import LearningAgent
-from regression_agent import LinearRegressionAgent, LearningAverageAgent, RollingAverageAgent
+from .other_agents.agent_team73 import Gentle, AdaptiveAgent
+from .other_agents.agent_team86 import AgentOneOneTwo
+from .other_agents.agent_template import LearningAgent
+from .regression_agent import LinearRegressionAgent, LearningAverageAgent, RollingAverageAgent
 
 
 class MyAgent(OneShotAgent):

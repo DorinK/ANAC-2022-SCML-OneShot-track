@@ -10,8 +10,8 @@ from negmas import ResponseType
 from scml import OneShotAgent, QUANTITY, UNIT_PRICE, TIME, SCML2020OneShotWorld, is_system_agent
 from scml import RandomOneShotAgent
 
-from other_agents.agent_team73 import Gentle
-from other_agents.agent_team86 import AgentOneOneTwo
+from .agent_team73 import Gentle
+from .agent_team86 import AgentOneOneTwo
 
 
 class SimpleAgent(OneShotAgent):

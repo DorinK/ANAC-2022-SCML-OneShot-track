@@ -10,6 +10,9 @@ from negmas import ResponseType
 from scml import OneShotAgent, QUANTITY, UNIT_PRICE, TIME, SCML2020OneShotWorld, is_system_agent
 from scml import RandomOneShotAgent
 
+from other_agents.agent_team73 import Gentle
+from other_agents.agent_team86 import AgentOneOneTwo
+
 
 class SimpleAgent(OneShotAgent):
     """A greedy agent based on OneShotAgent"""
@@ -256,7 +259,7 @@ class LearningAgent(AdaptiveAgent):
 
 def try_agent(agent_type, n_processes=2):
     """Runs an agent in a world simulation against a randomly behaving agent"""
-    return try_agents([RandomOneShotAgent, agent_type], n_processes)
+    return try_agents([RandomOneShotAgent, LearningAgent, AgentOneOneTwo, Gentle, agent_type], n_processes)
 
 
 def try_agents(agent_types, n_processes=2, n_trials=1, draw=True, agent_params=None):

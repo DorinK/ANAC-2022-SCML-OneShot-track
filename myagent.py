@@ -81,9 +81,10 @@ from negmas import (
     ResponseType,
 )
 
-from other_agents.agent_team73 import Gentle
+from other_agents.agent_team73 import Gentle, AdaptiveAgent
 from other_agents.agent_team86 import AgentOneOneTwo
 from other_agents.agent_template import LearningAgent
+from regression_agent import LinearRegressionAgent, LearningAverageAgent, RollingAverageAgent
 
 
 class MyAgent(OneShotAgent):
@@ -144,7 +145,6 @@ class MyAgent(OneShotAgent):
         """Called when a negotiation the agent is a party of ends with
         agreement"""
 
-from oneshot.regression_agent import RegressionAgent
 
 def run(
         competition="oneshot",
@@ -173,15 +173,19 @@ def run(
         - To speed it up, use a smaller `n_step` value
 
     """
+
     if competition == "oneshot":
         competitors = [
-            MyAgent,
-            RandomOneShotAgent,
+            # MyAgent,
+            # RandomOneShotAgent,
             AgentOneOneTwo,
-            SyncRandomOneShotAgent,
+            AdaptiveAgent,
+            # SyncRandomOneShotAgent,
             LearningAgent,
             Gentle,
-            RegressionAgent
+            RollingAverageAgent
+            # LearningAverageAgent,
+            # LinearRegressionAgent
         ]
     else:
         from scml.scml2020.agents import BuyCheapSellExpensiveAgent, DecentralizingAgent

@@ -126,13 +126,28 @@ def mean(list_items, default):
     if len(list_items) == 0:
         return default
     else:
-        rolling_last_value = pd.Series(list_items).ewm(alpha=0.1, adjust=False).mean().iloc[-1]
+        alpha_for_last_value = 0.1
+        if len(list_items) >= 2:
+            # Learn the best alpha given past data
+            # train, test = sklearn.model_selection.train_test_split(list_items, random_state=42)
+            train, test = list_items[:-1], list_items[-1:]
+
+            best_result = None
+            for alpha in range(1, 10):
+                alpha = alpha * 0.1
+                rolling_last_value = pd.Series(train).ewm(alpha=alpha, adjust=False).mean().iloc[-1]
+                result = abs(rolling_last_value - test) * -1
+                if best_result is None or result > best_result:
+                    best_result = result
+                    alpha_for_last_value = alpha
+
+        rolling_last_value = pd.Series(list_items).ewm(alpha=alpha_for_last_value, adjust=False).mean().iloc[-1]
         return default if pd.isna(rolling_last_value) else rolling_last_value
 
 
 if __name__ == "__main__":
     from other_agents.agent_template import try_agent, print_type_scores, LearningAgent
 
-    world, ascores, tscores = try_agent(RollingAverageAgent)
+    world, ascores, tscores = try_agent(LearningAverageAgent)
     print_type_scores(tscores)
 

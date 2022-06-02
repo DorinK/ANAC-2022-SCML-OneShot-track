@@ -84,7 +84,7 @@ from negmas import (
 from .other_agents.agent_team73 import Gentle, AdaptiveAgent
 from .other_agents.agent_team86 import AgentOneOneTwo
 from .other_agents.agent_template import LearningAgent
-from .regression_agent import LinearRegressionAgent, LearningAverageAgent, RollingAverageAgent
+from .regression_agent import LinearRegressionAgent
 
 
 class MyAgent(OneShotAgent):
@@ -183,9 +183,7 @@ def run(
             # SyncRandomOneShotAgent,
             LearningAgent,
             Gentle,
-            RollingAverageAgent
-            # LearningAverageAgent,
-            # LinearRegressionAgent
+            LinearRegressionAgent
         ]
     else:
         from scml.scml2020.agents import BuyCheapSellExpensiveAgent, DecentralizingAgent

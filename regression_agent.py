@@ -17,8 +17,6 @@ from negmas import Outcome, ResponseType
 
 __all__ = [
     "LinearRegressionAgent",
-    "LearningAverageAgent",
-    "RollingAverageAgent",
 ]
 
 
@@ -40,114 +38,9 @@ class LinearRegressionAgent(AgentOneOneTwo):
         return mn, mx
 
 
-class LearningAverageAgent(LearningAgent):
-    def init(self):
-        """Initialize the quantities and best prices received so far"""
-        super().init()
-        self._all_acc_selling, self._all_acc_buying = [], []
-        self._all_opp_selling = defaultdict(list)
-        self._all_opp_buying = defaultdict(lambda: [])
-        self._all_opp_acc_selling = defaultdict(list)
-        self._all_opp_acc_buying = defaultdict(lambda: [])
-
-    def before_step(self):
-        super().before_step()
-        self._all_selling, self._all_buying = [], []
-
-    def step(self):
-        """Initialize the quantities and best prices received for next step"""
-        super().step()
-        self._all_opp_selling = defaultdict(list)
-        self._all_opp_buying = defaultdict(lambda: [])
-
-    def on_negotiation_success(self, contract, mechanism):
-        """Record sales/supplies secured"""
-        super().on_negotiation_success(contract, mechanism)
-
-        # update my current best price to use for limiting concession in other
-        # negotiations
-        up = contract.agreement["unit_price"]
-        if self._is_selling(mechanism):
-            partner = contract.annotation["buyer"]
-            self._all_acc_selling.append(up)
-            self._all_opp_acc_selling[partner].append(up)
-        else:
-            partner = contract.annotation["seller"]
-            self._all_acc_buying.append(up)
-            self._all_opp_acc_buying[partner].append(up)
-
-    def respond(self, negotiator_id, state, offer):
-        # find the quantity I still need and end negotiation if I need nothing more
-        response = super().respond(negotiator_id, state, offer)
-        # update my current best price to use for limiting concession in other
-        # negotiations
-        ami = self.get_nmi(negotiator_id)
-        up = offer[UNIT_PRICE]
-        if self._is_selling(ami):
-            partner = ami.annotation["buyer"]
-            self._all_opp_selling[partner].append(up)
-            self._all_selling.append(offer[UNIT_PRICE])
-        else:
-            partner = ami.annotation["seller"]
-            self._all_opp_buying[partner].append(up)
-            self._all_buying.append(offer[UNIT_PRICE])
-        return response
-
-    def _price_range(self, ami):
-        mn = ami.issues[UNIT_PRICE].min_value
-        mx = ami.issues[UNIT_PRICE].max_value
-
-        if self._is_selling(ami):
-            partner = ami.annotation["buyer"]
-            self._best_selling = mean(self._all_selling, mx)
-            self._best_acc_selling = mean(self._all_acc_selling, mx)
-            self._best_opp_selling[partner] = mean(self._all_opp_selling[partner], mx)
-            self._best_opp_acc_selling[partner] = mean(self._all_opp_acc_selling[partner], mx)
-        else:
-            partner = ami.annotation["seller"]
-            self._best_buying = mean(self._all_buying, mn)
-            self._best_acc_buying = mean(self._all_acc_buying, mn)
-            self._best_opp_buying[partner] = mean(self._all_opp_buying[partner], mn)
-            self._best_opp_acc_buying[partner] = mean(self._all_opp_acc_buying[partner], mn)
-        return super()._price_range(ami)
-
-
-class RollingAverageAgent(AgentOneOneTwo):
-    def _price_range(self, nmi):
-        mn, mx = super()._price_range(nmi)
-        if self._is_selling(nmi):
-            mn = max(mn, mean(self._best_selling, mn))
-        else:
-            mx = min(mx, mean(self._best_buying, mx))
-        return mn, mx
-
-
-def mean(list_items, default):
-    if len(list_items) == 0:
-        return default
-    else:
-        alpha_for_last_value = 0.1
-        if len(list_items) >= 2:
-            # Learn the best alpha given past data
-            # train, test = sklearn.model_selection.train_test_split(list_items, random_state=42)
-            train, test = list_items[:-1], list_items[-1:]
-
-            best_result = None
-            for alpha in range(1, 10):
-                alpha = alpha * 0.1
-                rolling_last_value = pd.Series(train).ewm(alpha=alpha, adjust=False).mean().iloc[-1]
-                result = abs(rolling_last_value - test) * -1
-                if best_result is None or result > best_result:
-                    best_result = result
-                    alpha_for_last_value = alpha
-
-        rolling_last_value = pd.Series(list_items).ewm(alpha=alpha_for_last_value, adjust=False).mean().iloc[-1]
-        return default if pd.isna(rolling_last_value) else rolling_last_value
-
-
 if __name__ == "__main__":
     from other_agents.agent_template import try_agent, print_type_scores, LearningAgent
 
-    world, ascores, tscores = try_agent(LearningAverageAgent)
+    world, ascores, tscores = try_agent(LinearRegressionAgent)
     print_type_scores(tscores)
 
